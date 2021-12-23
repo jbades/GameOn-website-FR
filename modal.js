@@ -1,3 +1,93 @@
+// SHORTCUTS --------------------------------------------
+
+// DOM Elements creation
+const newParagraphElement = document.createElement("p");
+
+// DOM Elements targetting
+const modalbg = document.querySelector(".bground");
+const modalBtn = document.querySelectorAll(".modal-btn");
+const formData = document.querySelectorAll(".formData");
+const closeBtn = document.querySelector(".close");
+const firstNameInput = document.getElementById("first");
+const lastNameInput = document.getElementById("last");
+const emailInput = document.getElementById("email");
+const birthdateInput = document.getElementById("birthdate");
+const participationQtyInput = document.getElementById("quantity");
+const location1Input = document.getElementById("location1");
+const checkbox1Input = document.getElementById("checkbox1");
+const modalFieldWrapper = document.getElementsByClassName("formData");
+
+// Regex rules
+const regexString = new RegExp(`^[a-zA-Z]+$`)
+const regexEmail = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|'(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*')@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+
+
+
+// SCRIPT -----------------------------------------
+
+// launching modal event
+modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+
+// activating validation button
+
+// close button modal event
+closeBtn.addEventListener('click', closeModal);
+
+// 'escape' key modal event
+window.addEventListener('keydown', (e) => {
+  if (e.key === "Escape") {
+    closeModal;
+  };
+});
+
+// firstname field validation
+firstNameInput.addEventListener('input', () => {
+  if (isString(firstNameInput.value) 
+  && minTwoChar(firstNameInput.value) 
+  && isNotEmpty(firstNameInput.value)) {
+    firstNameInput.parentElement.setAttribute("data-error-visible", "false");
+  } else {
+    firstNameInput.parentElement.setAttribute("data-error-visible", "true");
+  }
+});
+
+// lastname field validation
+lastNameInput.addEventListener('input', () => {
+  if (isString(lastNameInput.value) 
+  && minTwoChar(lastNameInput.value) 
+  && isNotEmpty(lastNameInput.value)) {
+    lastNameInput.parentElement.setAttribute("data-error-visible", "false");
+  } else {
+    lastNameInput.parentElement.setAttribute("data-error-visible", "true");
+  }
+});
+
+// email field validation
+emailInput.addEventListener('input', () => {
+  if (emailFormatValidation(emailInput.value) 
+  && isNotEmpty(emailInput.value)) {
+    emailInput.parentElement.setAttribute("data-error-visible", "false");
+  } else {
+    emailInput.parentElement.setAttribute("data-error-visible", "true");
+  }
+});
+
+// participation number field validation
+participationQtyInput.addEventListener('input', () => {
+  if (isWholeNumber(participationQtyInput.value) 
+  && isNotEmpty(participationQtyInput.value)
+  ) {
+    participationQtyInput.parentElement.setAttribute("data-error-visible", "false");
+  } else {
+    participationQtyInput.parentElement.setAttribute("data-error-visible", "true");
+  }
+});
+
+
+
+// FUNCTIONS ------------------------------------------
+
+// burger menu
 function editNav() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -7,45 +97,54 @@ function editNav() {
   }
 }
 
-// DOM Elements
-const modalbg = document.querySelector(".bground");
-const modalBtn = document.querySelectorAll(".modal-btn");
-const formData = document.querySelectorAll(".formData");
-const closeBtn = document.querySelector(".close");
-const firstNameLabel = document.getElementById("first");
-const lastNameLabel = document.getElementById("last");
-const emailLabel = document.getElementById("email");
-const birthdateLabel = document.getElementById("birthdate");
-const participationQtyLabel = document.getElementById("quantity");
-const location1Label = document.getElementById("location1");
-const checkbox1Label = document.getElementById("checkbox1");
-
-// Email format
-const emailFormat = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|'(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*')@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])";
-
-// launch modal event
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
-
+// MODAL FUNCTIONS
 // launch modal form
 function launchModal() {
   modalbg.style.display = "block";
-  firstNameLabel.setAttribute("required","");
-  lastNameLabel.setAttribute("required","");
-  lastNameLabel.setAttribute("minlenght","2");
-  emailLabel.setAttribute("required","");
-  emailLabel.setAttribute("target", emailFormat);
-  birthdateLabel.setAttribute("required","");
-  participationQtyLabel.setAttribute("required","");
-  location1Label.setAttribute("required","");
-  checkbox1Label.setAttribute("required","");
 }
-
-// close modal event
-closeBtn.addEventListener('click', closeModal);
 
 // close modal form
 function closeModal() {
   modalbg.style.display = "none";
 }
 
+// FIELD TEST FUNCTIONS
+// check field is not empty
+function isNotEmpty(val) {
+  if (typeof val !== 'undefined' && val) {
+    return true;
+  }
+  return false;
+}
 
+// check type 'string'
+function isString(val) {
+  if (regexString.test(val)) {
+    return true;
+  }
+  return false;
+}  
+
+// check type 'number'
+function isWholeNumber(val) {
+  if (isNaN(val) && val < 0) {
+    return false;
+  }
+  return true;
+}  
+
+// check field lentgh
+function minTwoChar(val) {
+  if (val.length < 2) {
+    return false;
+  }
+  return true;
+}
+
+// check email format conformity
+function emailFormatValidation(val) {
+  if (regexEmail.test(val)) {
+    return true;
+  }
+  return false;
+}
