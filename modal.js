@@ -16,6 +16,7 @@ const participationQtyInput = document.getElementById("quantity");
 const location1Input = document.getElementById("location1");
 const checkbox1Input = document.getElementById("checkbox1");
 const modalFieldWrapper = document.getElementsByClassName("formData");
+const submitBtn = document.getElementsByClassName("btn-submit");
 
 // Regex rules
 const regexString = new RegExp(`^[a-zA-Z]+$`)
@@ -30,11 +31,12 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
 // activating validation button
 
+
 // close button modal event
 closeBtn.addEventListener('click', closeModal);
 
 // 'escape' key modal event
-window.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', (e) => {
   if (e.key === "Escape") {
     closeModal;
   };
@@ -42,10 +44,9 @@ window.addEventListener('keydown', (e) => {
 
 // firstname field validation
 firstNameInput.addEventListener('input', () => {
-  if (isString(firstNameInput.value) 
-  && minTwoChar(firstNameInput.value) 
-  && isNotEmpty(firstNameInput.value)) {
+  if (nameValidation(firstNameInput)) {
     firstNameInput.parentElement.setAttribute("data-error-visible", "false");
+    modalValidation;
   } else {
     firstNameInput.parentElement.setAttribute("data-error-visible", "true");
   }
@@ -53,10 +54,9 @@ firstNameInput.addEventListener('input', () => {
 
 // lastname field validation
 lastNameInput.addEventListener('input', () => {
-  if (isString(lastNameInput.value) 
-  && minTwoChar(lastNameInput.value) 
-  && isNotEmpty(lastNameInput.value)) {
+  if (nameValidation(lastNameInput)) {
     lastNameInput.parentElement.setAttribute("data-error-visible", "false");
+    modalValidation;
   } else {
     lastNameInput.parentElement.setAttribute("data-error-visible", "true");
   }
@@ -64,9 +64,9 @@ lastNameInput.addEventListener('input', () => {
 
 // email field validation
 emailInput.addEventListener('input', () => {
-  if (emailFormatValidation(emailInput.value) 
-  && isNotEmpty(emailInput.value)) {
+  if (emailValidation(emailInput)) {
     emailInput.parentElement.setAttribute("data-error-visible", "false");
+    modalValidation;
   } else {
     emailInput.parentElement.setAttribute("data-error-visible", "true");
   }
@@ -82,7 +82,6 @@ participationQtyInput.addEventListener('input', () => {
     participationQtyInput.parentElement.setAttribute("data-error-visible", "true");
   }
 });
-
 
 
 // FUNCTIONS ------------------------------------------
@@ -108,7 +107,7 @@ function closeModal() {
   modalbg.style.display = "none";
 }
 
-// FIELD TEST FUNCTIONS
+// TEST FUNCTIONS
 // check field is not empty
 function isNotEmpty(val) {
   if (typeof val !== 'undefined' && val) {
@@ -147,4 +146,39 @@ function emailFormatValidation(val) {
     return true;
   }
   return false;
+}
+
+// FIELD TESTING FUNCTIONS
+// testing name field
+function nameValidation(input) {
+  if (isString(input.value) 
+  && minTwoChar(input.value) 
+  && isNotEmpty(input.value)) {
+    return true;
+  }
+  return false;
+}
+
+// testing email field
+function emailValidation(input) {
+  if (emailFormatValidation(input.value) 
+  && isNotEmpty(input.value)) {
+    return true;
+  }
+  return false;
+}
+
+// modal validation
+function modalValidation () {
+  if (nameValidation(firstNameInput) 
+  && nameValidation(lastNameInput) 
+  && emailFormatValidation(emailInput)) {
+    console.log("true");
+//    submitBtn.removeAttribut("disabled");
+//    document.getElementsByClassName("btn-submit").parentElement.classList.remove("btn-disabled");
+  } else {
+    console.log("false");
+//    submitBtn.setAttribut("disabled", "");   
+//    document.getElementsByClassName("btn-submit").parentElement.classList.add("btn-disabled");
+  }
 }
