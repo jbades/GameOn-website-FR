@@ -29,9 +29,6 @@ const regexEmail = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}
 // launching modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
-// activating validation button
-
-
 // close button modal event
 closeBtn.addEventListener('click', closeModal);
 
