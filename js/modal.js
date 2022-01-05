@@ -76,13 +76,11 @@ birthdateInput.addEventListener('input', () => {
 
 // participation number field validation
 participationQtyInput.addEventListener('input', () => {
-  if (isWholeNumber(participationQtyInput.value) && isNotEmpty(participationQtyInput.value)
-  ) {
-    hideError(participationQtyInput.parentElement);
-    modalValidation();
-  } else {
+  hideError(participationQtyInput.parentElement);
+  if (!participationQtyValidation(participationQtyInput)) {
     showError(participationQtyInput.parentElement);
   }
+  modalValidation();
 });
 
 
@@ -120,7 +118,7 @@ function isNotEmpty(val) {
 
 //check field is not null
 function isNotNull(val) {
-  return(!(isNaN(val) && (typeof val !== "undefined")));
+    return(isNaN(val.valueOf()));
 }
 
 // check type 'string'
@@ -133,10 +131,7 @@ function isString(val) {
 
 // check type 'number'
 function isWholeNumber(val) {
-  if (isNaN(val) && val < 0) {
-    return false;
-  }
-  return true;
+  return (!isNaN(val) && val >= 0);
 }  
 
 // check field lentgh
@@ -177,14 +172,20 @@ function emailValidation(input) {
 
 // testing date field
 function dateValidation(input) {
-  console.log(input.value);
+  // console.log(input.value);
   return (isNotNull(input.value));
+}
+
+// testing participationQty field
+function participationQtyValidation(input) {
+  // console.log(input.value);
+  return (isWholeNumber(input.value));
 }
 
 // modal validation
 function modalValidation () {
   // console.log(nameValidation(firstNameInput), nameValidation(lastNameInput), emailFormatValidation(emailInput));
-    if (nameValidation(firstNameInput) && nameValidation(lastNameInput) && emailFormatValidation(emailInput) && dateValidation(birthdateInput)) {
+    if (nameValidation(firstNameInput) && nameValidation(lastNameInput) && emailFormatValidation(emailInput) && dateValidation(birthdateInput) && participationQtyValidation(participationQtyInput)) {
     // console.log("true");
     submitBtn.removeAttribute("disabled");
     document.querySelector(".btn-submit").classList.remove("btn-disabled");

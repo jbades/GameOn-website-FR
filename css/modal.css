@@ -189,9 +189,13 @@ input {
   line-height: 18px;
   opacity: 0;
   transition: 0.3s;
+  height: 0;
+  transform: scaleY(0);
 }
 .formData[data-error-visible="true"]::after {
   opacity: 1;
+  height: auto;
+  transform: scaleY(1);
 }
 .formData[data-error-visible="true"] .text-control {
   border: 2px solid #e54858;
