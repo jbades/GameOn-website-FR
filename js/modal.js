@@ -16,11 +16,10 @@ const participationQtyInput = document.getElementById("quantity");
 const location1Input = document.getElementById("location1");
 const checkbox1Input = document.getElementById("checkbox1");
 const modalFieldWrapper = document.getElementsByClassName("formData");
-const submitBtn = document.getElementsByClassName("btn-submit");
+const submitBtn = document.querySelector(".btn-submit");
 
 // Regex rules
-const regexString = new RegExp(`^[a-zA-Z]+$`)
-const regexEmail = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|'(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*')@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+const regexString = new RegExp(`^[a-zA-Z]+$`);
 
 
 
@@ -41,42 +40,48 @@ document.addEventListener('keydown', (e) => {
 
 // firstname field validation
 firstNameInput.addEventListener('input', () => {
-  if (nameValidation(firstNameInput)) {
-    firstNameInput.parentElement.setAttribute("data-error-visible", "false");
-    modalValidation;
-  } else {
-    firstNameInput.parentElement.setAttribute("data-error-visible", "true");
+  hideError(firstNameInput.parentElement);
+  if (!nameValidation(firstNameInput)) {
+    showError(firstNameInput.parentElement);
   }
+  modalValidation();
 });
 
 // lastname field validation
 lastNameInput.addEventListener('input', () => {
-  if (nameValidation(lastNameInput)) {
-    lastNameInput.parentElement.setAttribute("data-error-visible", "false");
-    modalValidation;
-  } else {
-    lastNameInput.parentElement.setAttribute("data-error-visible", "true");
+  hideError(lastNameInput.parentElement);
+  if (!nameValidation(lastNameInput)) {
+    showError(lastNameInput.parentElement);
   }
+  modalValidation();
 });
 
 // email field validation
 emailInput.addEventListener('input', () => {
-  if (emailValidation(emailInput)) {
-    emailInput.parentElement.setAttribute("data-error-visible", "false");
-    modalValidation;
-  } else {
-    emailInput.parentElement.setAttribute("data-error-visible", "true");
+  hideError(emailInput.parentElement);
+  if (!emailValidation(emailInput)) {
+    showError(emailInput.parentElement);
   }
+  modalValidation();
+});
+
+// birthdate field validation
+birthdateInput.addEventListener('input', () => {
+  hideError(birthdateInput.parentElement);
+  if (!dateValidation(birthdateInput)) {
+    showError(birthdateInput.parentElement);
+  }
+  modalValidation();
 });
 
 // participation number field validation
 participationQtyInput.addEventListener('input', () => {
-  if (isWholeNumber(participationQtyInput.value) 
-  && isNotEmpty(participationQtyInput.value)
+  if (isWholeNumber(participationQtyInput.value) && isNotEmpty(participationQtyInput.value)
   ) {
-    participationQtyInput.parentElement.setAttribute("data-error-visible", "false");
+    hideError(participationQtyInput.parentElement);
+    modalValidation();
   } else {
-    participationQtyInput.parentElement.setAttribute("data-error-visible", "true");
+    showError(participationQtyInput.parentElement);
   }
 });
 
@@ -113,6 +118,11 @@ function isNotEmpty(val) {
   return false;
 }
 
+//check field is not null
+function isNotNull(val) {
+  return(!(isNaN(val) && (typeof val !== "undefined")));
+}
+
 // check type 'string'
 function isString(val) {
   if (regexString.test(val)) {
@@ -139,43 +149,48 @@ function minTwoChar(val) {
 
 // check email format conformity
 function emailFormatValidation(val) {
-  if (regexEmail.test(val)) {
-    return true;
-  }
-  return false;
+  // console.log(val.value)
+  return (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(val.value));
+}
+
+// ERROR MESSAGE FUNCTIONS
+// hiding error message
+function hideError (el) {
+  el.setAttribute("data-error-visible", "false");
+}
+
+// showing error message
+function showError (el) {
+  el.setAttribute("data-error-visible", "true");
 }
 
 // FIELD TESTING FUNCTIONS
 // testing name field
 function nameValidation(input) {
-  if (isString(input.value) 
-  && minTwoChar(input.value) 
-  && isNotEmpty(input.value)) {
-    return true;
-  }
-  return false;
+  return (isString(input.value) && minTwoChar(input.value) && isNotEmpty(input.value));
 }
 
 // testing email field
 function emailValidation(input) {
-  if (emailFormatValidation(input.value) 
-  && isNotEmpty(input.value)) {
-    return true;
-  }
-  return false;
+  return (emailFormatValidation(input) && isNotEmpty(input));
+}
+
+// testing date field
+function dateValidation(input) {
+  console.log(input.value);
+  return (isNotNull(input.value));
 }
 
 // modal validation
 function modalValidation () {
-  if (nameValidation(firstNameInput) 
-  && nameValidation(lastNameInput) 
-  && emailFormatValidation(emailInput)) {
-    console.log("true");
-//    submitBtn.removeAttribut("disabled");
-//    document.getElementsByClassName("btn-submit").parentElement.classList.remove("btn-disabled");
+  // console.log(nameValidation(firstNameInput), nameValidation(lastNameInput), emailFormatValidation(emailInput));
+    if (nameValidation(firstNameInput) && nameValidation(lastNameInput) && emailFormatValidation(emailInput) && dateValidation(birthdateInput)) {
+    // console.log("true");
+    submitBtn.removeAttribute("disabled");
+    document.querySelector(".btn-submit").classList.remove("btn-disabled");
   } else {
-    console.log("false");
-//    submitBtn.setAttribut("disabled", "");   
-//    document.getElementsByClassName("btn-submit").parentElement.classList.add("btn-disabled");
+    // console.log("false");
+    submitBtn.setAttribute("disabled", "");   
+    document.querySelector(".btn-submit").classList.add("btn-disabled");
   }
 }
