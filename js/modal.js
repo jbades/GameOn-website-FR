@@ -13,7 +13,7 @@ const lastNameInput = document.getElementById("last");
 const emailInput = document.getElementById("email");
 const birthdateInput = document.getElementById("birthdate");
 const participationQtyInput = document.getElementById("quantity");
-const location1Input = document.getElementById("location1");
+const locationInput = document.querySelectorAll('[name="location"]');
 const checkbox1Input = document.getElementById("checkbox1");
 const modalFieldWrapper = document.getElementsByClassName("formData");
 const submitBtn = document.querySelector(".btn-submit");
@@ -110,7 +110,8 @@ function closeModal() {
 // TEST FUNCTIONS
 // check field is not empty
 function isNotEmpty(val) {
-  if (typeof val !== 'undefined' && val) {
+  // console.log(typeof val !== 'undefined',val, val !=="");
+  if (typeof val !== 'undefined' && val !=="") {
     return true;
   }
   return false;
@@ -167,30 +168,46 @@ function nameValidation(input) {
 
 // testing email field
 function emailValidation(input) {
-  return (emailFormatValidation(input) && isNotEmpty(input));
+  return (emailFormatValidation(input) && isNotEmpty(input.value));
 }
 
 // testing date field
 function dateValidation(input) {
-  console.log(input.value);
-  return (isNotNull(input.value));
+  // console.log(input.value);
+  return (isNotNull(input.value) && isNotEmpty(input.value));
 }
 
 // testing participationQty field
 function participationQtyValidation(input) {
-  return (isWholeNumber(input.value) && input.value <=99);
+  // console.log(isNotEmpty(input.val), isWholeNumber(input.value), input.value <=99);
+  return (isNotEmpty(input.value) && isWholeNumber(input.value) && input.value <=99);
+}
+
+// testing city checkbox
+function cityCheckboxValidation() {
+  return(locationInput.checked);
+}
+
+// MODAL VALIDATION
+// enabling validation button
+function enableButton() {
+  submitBtn.removeAttribute("disabled");
+  document.querySelector(".btn-submit").classList.remove("btn-disabled");
+}
+
+// disabling validation button
+function disableButton() {
+  submitBtn.setAttribute("disabled", "");   
+  document.querySelector(".btn-submit").classList.add("btn-disabled");
 }
 
 // modal validation
 function modalValidation () {
-  // console.log(nameValidation(firstNameInput), nameValidation(lastNameInput), emailFormatValidation(emailInput));
+  // console.log(nameValidation(firstNameInput), nameValidation(lastNameInput), emailFormatValidation(emailInput), dateValidation(birthdateInput), participationQtyValidation(participationQtyInput));
     if (nameValidation(firstNameInput) && nameValidation(lastNameInput) && emailFormatValidation(emailInput) && dateValidation(birthdateInput) && participationQtyValidation(participationQtyInput)) {
-    // console.log("true");
-    submitBtn.removeAttribute("disabled");
-    document.querySelector(".btn-submit").classList.remove("btn-disabled");
+      enableButton();
   } else {
-    // console.log("false");
-    submitBtn.setAttribute("disabled", "");   
-    document.querySelector(".btn-submit").classList.add("btn-disabled");
+    disableButton();
   }
 }
+
