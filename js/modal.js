@@ -131,7 +131,7 @@ function isString(val) {
 
 // check type 'number'
 function isWholeNumber(val) {
-  return (!isNaN(val) && val >= 0);
+  return(!isNaN(val) && val >= 0);
 }  
 
 // check field lentgh
@@ -172,14 +172,13 @@ function emailValidation(input) {
 
 // testing date field
 function dateValidation(input) {
-  // console.log(input.value);
+  console.log(input.value);
   return (isNotNull(input.value));
 }
 
 // testing participationQty field
 function participationQtyValidation(input) {
-  // console.log(input.value);
-  return (isWholeNumber(input.value));
+  return (isWholeNumber(input.value) && input.value <=99);
 }
 
 // modal validation
