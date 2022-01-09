@@ -1,8 +1,5 @@
 // SHORTCUTS --------------------------------------------
 
-// DOM Elements creation
-const newParagraphElement = document.createElement("p");
-
 // DOM Elements targetting
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
@@ -13,10 +10,11 @@ const lastNameInput = document.getElementById("last");
 const emailInput = document.getElementById("email");
 const birthdateInput = document.getElementById("birthdate");
 const participationQtyInput = document.getElementById("quantity");
-const locationInput = document.querySelectorAll('[name="location"]');
+const locationInputs = document.querySelectorAll('[name="location"]');
 const checkbox1Input = document.getElementById("checkbox1");
 const modalFieldWrapper = document.getElementsByClassName("formData");
 const submitBtn = document.querySelector(".btn-submit");
+const formWrapper = document.querySelector('[name="reserve"]');
 
 // Regex rules
 const regexString = new RegExp(`^[a-zA-Z]+$`);
@@ -34,7 +32,7 @@ closeBtn.addEventListener('click', closeModal);
 // 'escape' key modal event
 document.addEventListener('keydown', (e) => {
   if (e.key === "Escape") {
-    closeModal;
+    closeModal();
   };
 });
 
@@ -83,6 +81,26 @@ participationQtyInput.addEventListener('input', () => {
   modalValidation();
 });
 
+// city checkbox validation
+locationInputs.forEach((input) => {
+  input.addEventListener('input', () => {
+    modalValidation();
+  })
+});
+
+// agreement checkbox validation
+  checkbox1Input.addEventListener('input', () => {
+    modalValidation();
+  });
+
+// post-validation message
+formWrapper.addEventListener("submit", (e) => {
+  e.preventDefault();
+  newDiv("tks__msg", "Merci ! Votre réservation a été reçue", formWrapper.parentElement);
+  newButton("btn-signup", "button", "Fermer", formWrapper.parentElement);
+  formWrapper.style.display = "none";
+});
+
 
 // FUNCTIONS ------------------------------------------
 
@@ -104,7 +122,7 @@ function launchModal() {
 
 // close modal form
 function closeModal() {
-  modalbg.style.display = "none";
+  formWrapper.style.display = "none";
 }
 
 // TEST FUNCTIONS
@@ -185,8 +203,26 @@ function participationQtyValidation(input) {
 
 // testing city checkbox
 function cityCheckboxValidation() {
-  return(locationInput.checked);
+  let isValid = false;
+  locationInputs.forEach(input => {
+    // console.log(input);
+    if (input.checked == true) {
+      isValid = true;
+    }
+  });
+  // console.log("city", isValid);
+  return isValid;
 }
+
+// testing city checkbox
+function agreementCheckboxValidation() {
+  let isValid = false;
+  if (checkbox1Input.checked == true) {
+    isValid = true;
+  };
+  return isValid;
+}
+
 
 // MODAL VALIDATION
 // enabling validation button
@@ -203,11 +239,29 @@ function disableButton() {
 
 // modal validation
 function modalValidation () {
-  // console.log(nameValidation(firstNameInput), nameValidation(lastNameInput), emailFormatValidation(emailInput), dateValidation(birthdateInput), participationQtyValidation(participationQtyInput));
-    if (nameValidation(firstNameInput) && nameValidation(lastNameInput) && emailFormatValidation(emailInput) && dateValidation(birthdateInput) && participationQtyValidation(participationQtyInput)) {
+  console.log(cityCheckboxValidation(), agreementCheckboxValidation());
+  // console.log(nameValidation(firstNameInput), nameValidation(lastNameInput), emailFormatValidation(emailInput), dateValidation(birthdateInput), participationQtyValidation(participationQtyInput), cityCheckboxValidation());
+    if (nameValidation(firstNameInput) && nameValidation(lastNameInput) && emailFormatValidation(emailInput) && dateValidation(birthdateInput) && participationQtyValidation(participationQtyInput) && cityCheckboxValidation() && agreementCheckboxValidation()) {
       enableButton();
   } else {
+    // enableButton();
     disableButton();
   }
 }
 
+function newDiv(className, divText, parentNode) {
+  const div = document.createElement("div");
+  div.classList.add(className);
+  const Text = document.createTextNode(divText);
+  div.appendChild(Text);  
+  parentNode.appendChild(div);
+}
+
+function newButton(className, btnType, divText, parentNode) {
+  const div = document.createElement("button");
+  div.classList.add(className);
+  div.setAttribute("type", btnType);
+  const Text = document.createTextNode(divText);
+  div.appendChild(Text);  
+  parentNode.appendChild(div);
+}
