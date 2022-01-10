@@ -156,7 +156,6 @@ main {
 .modal-body {
   padding: 15px 8%;
   margin: 15px auto;
-  min-height: 75vw;
 }
 
 label {
@@ -297,7 +296,7 @@ input[data-error]::after {
   transform: rotate(-45deg);
 }
 .btn-submit,
-.btn-signup {
+.btn-signup, .btn-tks {
   background: #fe142f;
   display: block;
   margin: 0 auto;
@@ -439,7 +438,7 @@ input[data-error]::after {
   text-transform: capitalize;
   font-size: 1.3rem;
   padding: 15px 23px;
-  margin: 0 auto;
+  margin: 0;
   margin-top: 59px;
 }
 .hero-img {
@@ -479,14 +478,26 @@ footer {
     font-size: 18px;
   }
 
+  .main-navbar a:hover i {
+    color: #fff;
+  }
+
   .hero-headline {
     font-size: 3em;
+  }
+
+  .hero-content {
+    grid-column: span 5;
+  }
+
+  .hero-img {
+    grid-column: span 7;
   }
 }
 
 @media screen and (max-width: 800px) {
   .hero-section {
-    display: block;
+    display: inherit;
     box-shadow: unset;
   }
   .hero-content {
@@ -529,16 +540,20 @@ footer {
     display: block;
   }
   
-  .topnav a {display: none;}
+  .topnav a {
+    display: none;
+  }
   .topnav a.icon {
     float: right;
     display: block;
   }
-  .topnav.responsive {position: relative;}
+  .topnav.responsive {
+    position: relative;
+  }
   .topnav.responsive .icon {
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 20px;
+    top: 20px;
   }
   .topnav.responsive a {
     float: none;
@@ -552,7 +567,6 @@ footer {
 }
 
 @media screen and (max-width: 540px) {
-  
   .header-logo {
     padding-top: 7px;
   }
@@ -565,32 +579,41 @@ footer {
     padding: 20px;
     width: 100%;
     background-color: #fff;
+  }
+
+  .topnav.modal__active {
     position: fixed;
     z-index: 2;
   }
-  
-  .topnav a {display: none;}
+
+  .topnav a {
+    display: none;
+  }
+
   .topnav a.icon {
     float: right;
     display: block;
 /*    margin-top: -15px;*/
   }
 
-  main {
-    position: absolute;
-    top: 100px;
-  }
-
   .bground {
     background-color: inherit;
-    position: fixed;
     top: 13%;
+  }
+
+  .bground.modal__active {
+    height: 87%;
   }
 
   .bground .content {
     margin: inherit;
     max-width: inherit;
   }
+
+  .hero-section.modal__active {
+    display: none;
+  }
+
 } 
 
 

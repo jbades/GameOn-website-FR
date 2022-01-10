@@ -38,7 +38,7 @@
           </h1>
           <p class="hero-text">
             Vous aimez jouer ? Notre prochain évènement gaming est ouvert
-            aux réservations... Places limitées !
+            aux réservations... Places limitées&nbsp;!
           </p>
           <button class="btn-signup modal-btn">
             je m'inscris
@@ -57,11 +57,11 @@
           <span class="close"></span>
           <div class="modal-body">
             <form
-              name="reserve"
-              action="index.html"
-              method="get"
-              onsubmit="return validate();"
+            name="reserve"
+            action="index.html"
+            method="get"
             >
+            <!-- onsubmit="return validate();" -->
               <div
                 class="formData"
                 data-error="Ce champ doit contenir au moins 2 caractères et uniquement des lettres">
@@ -212,7 +212,7 @@
                 <br>
               </div>
               <input
-                class="button btn-submit btn-disabled"
+                class="btn-submit btn-disabled"
                 disabled
                 type="submit"
                 class="button"

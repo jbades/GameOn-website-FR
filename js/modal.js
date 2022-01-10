@@ -15,6 +15,9 @@ const checkbox1Input = document.getElementById("checkbox1");
 const modalFieldWrapper = document.getElementsByClassName("formData");
 const submitBtn = document.querySelector(".btn-submit");
 const formWrapper = document.querySelector('[name="reserve"]');
+const tksBtn = document.querySelector(".btn-tks");
+const topNav = document.getElementById("myTopnav");
+const heroSection = document.querySelector(".hero-section");
 
 // Regex rules
 const regexString = new RegExp(`^[a-zA-Z]+$`);
@@ -24,10 +27,21 @@ const regexString = new RegExp(`^[a-zA-Z]+$`);
 // SCRIPT -----------------------------------------
 
 // launching modal event
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+modalBtn.forEach((btn) => btn.addEventListener("click", () => {
+  launchModal();
+  topNav.classList.add("modal__active");
+  heroSection.classList.add("modal__active");
+  modalbg.classList.add("modal__active");
+}));
+
 
 // close button modal event
-closeBtn.addEventListener('click', closeModal);
+closeBtn.addEventListener("click", () => {
+  closeModal();
+  topNav.classList.remove("modal__active");
+  heroSection.classList.remove("modal__active");
+  modalbg.classList.remove("modal__active");
+});
 
 // 'escape' key modal event
 document.addEventListener('keydown', (e) => {
@@ -96,17 +110,23 @@ locationInputs.forEach((input) => {
 // post-validation message
 formWrapper.addEventListener("submit", (e) => {
   e.preventDefault();
-  newDiv("tks__msg", "Merci ! Votre réservation a été reçue", formWrapper.parentElement);
-  newButton("btn-signup", "button", "Fermer", formWrapper.parentElement);
-  formWrapper.style.display = "none";
+  closeForm();
+  newDiv("tks__msg", "Merci ! Votre réservation a bien été reçue", formWrapper.parentElement);
+  newButton("btn-tks", "button", "Fermer", formWrapper.parentElement);
 });
+
+// thanks button action
+// alert(document.querySelector(".btn-tks"));
+// tksBtn.addEventListener("click", () => {
+//   modalClose();
+// });
 
 
 // FUNCTIONS ------------------------------------------
 
 // burger menu
 function editNav() {
-  var x = document.getElementById("myTopnav");
+  var x = topNav;
   if (x.className === "topnav") {
     x.className += " responsive";
   } else {
@@ -114,21 +134,28 @@ function editNav() {
   }
 }
 
+// adding class for topnav & modal responsive display
+
+
 // MODAL FUNCTIONS
-// launch modal form
+// launch modal popup
 function launchModal() {
   modalbg.style.display = "block";
 }
 
-// close modal form
-function closeModal() {
+// close form
+function closeForm() {
   formWrapper.style.display = "none";
+}
+
+// close modal popup
+function closeModal() {
+  modalbg.style.display = "none";
 }
 
 // TEST FUNCTIONS
 // check field is not empty
 function isNotEmpty(val) {
-  // console.log(typeof val !== 'undefined',val, val !=="");
   if (typeof val !== 'undefined' && val !=="") {
     return true;
   }
@@ -191,13 +218,11 @@ function emailValidation(input) {
 
 // testing date field
 function dateValidation(input) {
-  // console.log(input.value);
   return (isNotNull(input.value) && isNotEmpty(input.value));
 }
 
 // testing participationQty field
 function participationQtyValidation(input) {
-  // console.log(isNotEmpty(input.val), isWholeNumber(input.value), input.value <=99);
   return (isNotEmpty(input.value) && isWholeNumber(input.value) && input.value <=99);
 }
 
@@ -205,12 +230,10 @@ function participationQtyValidation(input) {
 function cityCheckboxValidation() {
   let isValid = false;
   locationInputs.forEach(input => {
-    // console.log(input);
     if (input.checked == true) {
       isValid = true;
     }
   });
-  // console.log("city", isValid);
   return isValid;
 }
 
@@ -239,16 +262,15 @@ function disableButton() {
 
 // modal validation
 function modalValidation () {
-  console.log(cityCheckboxValidation(), agreementCheckboxValidation());
-  // console.log(nameValidation(firstNameInput), nameValidation(lastNameInput), emailFormatValidation(emailInput), dateValidation(birthdateInput), participationQtyValidation(participationQtyInput), cityCheckboxValidation());
     if (nameValidation(firstNameInput) && nameValidation(lastNameInput) && emailFormatValidation(emailInput) && dateValidation(birthdateInput) && participationQtyValidation(participationQtyInput) && cityCheckboxValidation() && agreementCheckboxValidation()) {
       enableButton();
   } else {
-    // enableButton();
     disableButton();
   }
 }
 
+// CREATING DOM ELEMENTS
+// creating new div
 function newDiv(className, divText, parentNode) {
   const div = document.createElement("div");
   div.classList.add(className);
@@ -257,6 +279,7 @@ function newDiv(className, divText, parentNode) {
   parentNode.appendChild(div);
 }
 
+// creating new button
 function newButton(className, btnType, divText, parentNode) {
   const div = document.createElement("button");
   div.classList.add(className);
