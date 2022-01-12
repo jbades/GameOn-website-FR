@@ -35,8 +35,10 @@ img {
   margin: 3.5%;
 }
 .header-logo {
-    float: left;
-    margin-bottom: 20px;
+  float: left;
+/*    margin-bottom: 20px;*/
+  max-width: 265px;
+  margin: 0 auto;
 }
 .main-navbar {
     float: right;
@@ -408,7 +410,7 @@ input[data-error]::after {
   color: #fff;
   position: relative;
   text-align: left;
-/*  min-width: 424px;*/
+  min-width: 424px;
 }
 .hero-content::after {
   content: "";
