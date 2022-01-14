@@ -107,20 +107,16 @@ locationInputs.forEach((input) => {
     modalValidation();
   });
 
-// post-validation message
-formWrapper.addEventListener("submit", (e) => {
-  e.preventDefault();
-  closeForm();
-  newDiv("tks__msg", "Merci ! Votre réservation a bien été reçue", formWrapper.parentElement);
-  newButton("btn-tks", "button", "Fermer", formWrapper.parentElement);
+  
+  // post-validation message & send data on submit
+  formWrapper.addEventListener("submit", (e) => {
+    e.preventDefault();
+    submitModalData();
+    closeForm();
+    newDiv("tks__msg", "Merci ! Votre réservation a bien été reçue", formWrapper.parentElement);
+    newButton("btn-tks", "button", "Fermer", formWrapper.parentElement);
+    document.querySelector(".btn-tks").addEventListener('click', closeModal);
 });
-
-// thanks button action
-// alert(document.querySelector(".btn-tks"));
-// tksBtn.addEventListener("click", () => {
-//   modalClose();
-// });
-
 
 // FUNCTIONS ------------------------------------------
 
@@ -227,11 +223,13 @@ function participationQtyValidation(input) {
 }
 
 // testing city checkbox
+let contestCity;
 function cityCheckboxValidation() {
   let isValid = false;
   locationInputs.forEach(input => {
     if (input.checked == true) {
       isValid = true;
+      contestCity = input.value;
     }
   });
   return isValid;
@@ -267,6 +265,16 @@ function modalValidation () {
   } else {
     disableButton();
   }
+}
+
+// submit modal data
+function submitModalData() {
+  console.log(firstNameInput.value);
+  console.log(lastNameInput.value);
+  console.log(emailInput.value);
+  console.log(birthdateInput.value);
+  console.log(participationQtyInput.value);
+  console.log(contestCity);
 }
 
 // CREATING DOM ELEMENTS
